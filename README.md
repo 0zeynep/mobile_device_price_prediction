@@ -83,7 +83,7 @@ Korelasyon matrisi,iki veya daha fazla değişkenin ne kadar güçlü ve ne yön
 
 Isı haritasında da görüldüğü gibi en uygun ilişki Launched Price(USA) ile  RAM dir.
 
-![heatmap](images/heatmap.png)
+![heatmap](images/heatmapp.png)
 
 ### 6)RAM miktarı ile telefonların ortalama lansman fiyatı arasındaki ilişkiyi gösteren bar grafiği
 
@@ -112,7 +112,7 @@ RAM sütununu alır ve scikit-learn kütüphanesinin ihtiyacı olan 2 boyutlu ma
         X, y,
         test_size=0.2,
         random_state=42
-)
+        )
 
 Veri setini rastgele olarak %80 Eğitim (_train) ve %20 Test (_test) kümelerine ayırır. random_state=42 ise bu rastgeleliği sabitler.
 
@@ -151,6 +151,24 @@ Grafik boyutu,gerçek veri noktaları ve regresyon doğrusu oluşturulur.
 
 RAM özelliğini alır ve degree=2 (ikinci derece/karesel) kullanarak onu yeni bir özellik setine dönüştürür. Basitçe, orijinal  (RAM) değerini x^2 formunda genişletir.
 
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y,
+            test_size=0.2,
+            random_state=42
+        )
+
+        degree = 2
+        poly_features = PolynomialFeatures(degree=degree)
+        X_train_poly = poly_features.fit_transform(X_train)
+        X_test_poly = poly_features.transform(X_test)
+        poly_reg = LinearRegression()
+        poly_reg.fit(X_train_poly, y_train)
+        y_pred = poly_reg.predict(X_test_poly)
+
+Eğitim özelliklerini (X_train) alır ve onu 1, x, x^2 formatına dönüştürür. fit_transform hem dönüşümü öğrenir hem de uygular.
+
+Test özelliklerini (X_test) alır ve eğitim verisinden öğrenilen kuralları kullanarak aynı formata dönüştürür.
+
 Bu yeni, genişletilmiş özellikler seti üzerine klasik bir Doğrusal Regresyon (LinearRegression) modeli eğitilir. Bu, modelin aslında bir eğri öğrenmesini sağlar.
 
 Grafikte de görüldüğü gibi polinomal regresyon doğru bir yaklaşım değildir.Basitlik ve yorumlanabilirlik için fazla karmaşıktır.
@@ -163,7 +181,22 @@ Karar ağaçlarından oluşur.Ağaçların ortalamasını alır.
 
 Tahminleri yorumlamak zordur.
 
-Grafikte görüldüğü gibi linear regresyonla arasında çokn büyük bir fark yoktur ve bu durumda uygun olan daha basit yorumlaması kolay olan linear regresyonu kulllanmaktır.
+        rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
+
+Random forest modelini başlatır. n_estimators=100 parametresi, modelin 100 farklı Decision Tree oluşturacağı anlamına gelir.
+
+        plt.subplot(1, 2, 1)
+        sns.scatterplot(x=y_test, y=y_pred, color='green', alpha=0.6, s=70)
+        
+Test kümesindeki gerçek fiyatları (y_test) ve modelin tahmin ettiği fiyatları (y_pred) mor noktalar olarak çizer. Noktaların dağılımı, modelin performansını gösterir.
+
+        min_val = min(y_test.min(), y_pred.min())
+        max_val = max(y_test.max(), y_pred.max())
+        plt.plot([min_val, max_val], [min_val, max_val], 'r--', linewidth=2, label='İdeal Tahmin Çizgisi')
+
+Grafiğe y=x doğrusunu çizer. Tüm noktaların bu çizgi üzerinde toplanması, hatasız tahmin anlamına gelir. Noktalar bu çizgiye ne kadar yakınsa, model o kadar iyidir.
+        
+Grafikte görüldüğü gibi linear regresyonla arasında çok büyük bir fark yoktur ve bu durumda uygun olan daha basit yorumlaması kolay olan linear regresyonu kulllanmaktır.
 
 ![Random Forest ](images/random_forest.png)
 
@@ -182,6 +215,23 @@ Amacı, veri noktalarının çoğunu epsilon adı verilen belirli bir hata marj�
 
 Hata marjı içindeki noktalar umursanmaz, sadece bu marjın dışındaki noktalar (Destek Vektörleri) hataya neden olur.
 
+        scaler_X = StandardScaler()
+
+Veri ölçeklendirme için StandardScaler objesi başlatılır. Bu veriyi ortalaması 0, standart sapması 1 olacak şekilde dönüştürür.
+
+        svr_model = SVR(kernel='rbf', C=1000, epsilon=0.1)
+
+SVR modelini başlatır. Bu parametreler, modelin karmaşıklığını ve hata toleransını belirler: kernel='rbf' ile modelin doğrusal olmayan ilişkileri yakalaması sağlanır.
+
+        svr_model.fit(X_train_scaled, y_train)
+        svr_model.fit(X_train_scaled, y_train)
+        y_pred = svr_model.predict(X_test_scaled)
+
+Model, ölçeklendirilmiş eğitim verileri üzerinde en uygun hata marjını ($\epsilon$) ve destek vektörlerini bulmayı öğrenir.
+
+Tahminler ölçeklendirilmiş test verisi üzerinden yapılır.
+
+
 Grafikte görüldüğü gibi düşük açıklama gücü ve yüksek hata payından dolayı uygun değildir.
 
 ![SVR](images/SVR.png)
@@ -190,6 +240,9 @@ Grafikte görüldüğü gibi düşük açıklama gücü ve yüksek hata payında
 Çoklu regresyon birden fazla özelliğin bağımlı değişkeni  nasıl etkilediğini bulmayı sağlar.
 
 Korelasyon matrisine baktığımızda RAM den sonra en  güçlü ilişki Mobile Weight ile kurulmuştur.
+
+        target = "Launched Price (USA)"
+        features = ["RAM", "Mobile Weight"]
 
 RAM ve Mobile Weight’ın birlikte kullanılması da basit regresyondan farklı bir sonuca ulaşmamıştır.
 
