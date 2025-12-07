@@ -86,12 +86,13 @@ Isı haritasında da görüldüğü gibi en uygun ilişki Launched Price(USA) il
 ### 6)RAM miktarı ile telefonların ortalama lansman fiyatı arasındaki ilişkiyi gösteren bar grafiği
 
 Aşağıdaki bar grafiğinde de görüldüğü gibi RAM miktarı arttıkça Launched Price(USA) de artmaktadır.
+![Bar Grafiği](images/bar.png)
 
 ### 7)Regresyon Uygulama
 
-#### Linear Regresyon
+### Linear Regresyon
 
-##### Hazırlık ve Veri Bölme
+#### Hazırlık ve Veri Bölme
 
     ram_price_df = mobiles[[feature, target]].copy()
 
@@ -114,7 +115,7 @@ RAM sütununu alır ve scikit-learn kütüphanesinin ihtiyacı olan 2 boyutlu ma
 Veri setini rastgele olarak %80 Eğitim (_train) ve %20 Test (_test) kümelerine ayırır. random_state=42 ise bu rastgeleliği sabitler.
 
 
-##### Model Kurulumu ve Eğitim
+#### Model Kurulumu ve Eğitim
 
     lin_reg.fit(X_train, y_train)
 
@@ -130,7 +131,7 @@ Ortalama karekök hata hesaplanır.Modelin tahminlerinin gerçek değerden ne ka
 
 Belirleme katsayısı hesaplanır.Modelin fiyattaki değişim yüzdesini açıklar.
 
-##### Görselleştirme
+#### Görselleştirme
 
 
 Grafik boyutu,gerçek veri noktaları ve regresyon doğrusu oluşturulur.
@@ -143,16 +144,16 @@ Grafik boyutu,gerçek veri noktaları ve regresyon doğrusu oluşturulur.
     plt.ylabel('Launched Price (USA)')
     plt.legend()
     plt.show()
-
-#### Polinomal Regresyon
+![Linear Regresyon](images/linear_regression.png)
+### Polinomal Regresyon
 
 RAM özelliğini alır ve degree=2 (ikinci derece/karesel) kullanarak onu yeni bir özellik setine dönüştürür. Basitçe, orijinal $x$ (RAM) değerini x^2 formunda genişletir.
 
 Bu yeni, genişletilmiş özellikler seti üzerine klasik bir Doğrusal Regresyon (LinearRegression) modeli eğitilir. Bu, modelin aslında bir eğri öğrenmesini sağlar.
 
-Grafiikte de görüldüğü gibi polinomal regresyon doğru bir yaklaşım değildir.Basitlik ve yorumlanabilirlik için fazla karmaşıktır.
-
-#### Random Forest
+Grafikte de görüldüğü gibi polinomal regresyon doğru bir yaklaşım değildir.Basitlik ve yorumlanabilirlik için fazla karmaşıktır.
+![Polinomal Regresyon](images/polinomial_regression.png)
+### Random Forest
 
 Karar ağaçlarından oluşur.Ağaçların ortalamasını alır.
 
@@ -160,19 +161,38 @@ Tahminleri yorumlamak zordur.
 
 Grafikte görüldüğü gibi linear regresyonla arasında çokn büyük bir fark yoktur ve bu durumda uygun olan daha basit yorumlaması kolay olan linear regresyonu kulllanmaktır.
 
+![Random Forest ](images/random_forest.png)
 
 
-#### Lojistik Regresyon 
+### Lojistik Regresyon 
 
 Lojistik regresyon uygulamak için kategorik ifadeler olması gerekir.Lojistik regresyonun çıktısı 0-1 arasındadır.Fiyat tahmini için uygun değildir.
 
-#### SVR
+### SVR
 
 Amacı, veri noktalarının çoğunu epsilon adı verilen belirli bir hata marjı içinde tutan en iyi sınırı bulmaktır . Hata marjı içindeki noktalar umursanmaz, sadece bu marjın dışındaki noktalar (Destek Vektörleri) hataya neden olur.
 
 Grafikte görüldüğü gibi düşük açıklama gücü ve yüksek hata payından dolayı uygun değildir.
 
-#### Çoklu Linear Regresyon 
+![SVR](images/SVR.png)
+
+### Çoklu Linear Regresyon 
 
 RAM ve Launched Year’ın birlikte kullanılması da basit regresyondan farklı bir sonuca ulaşmamıştır.
+
+![Çoklu Linear](images/multiple_linear.png)
+
+## Sonuç
+
+Veri setindeki özellikler içinn gerekli temizlik yapılarak  sayısal değerler dışındaki ifadeler çıkarılmıştır.
+
+Fiyat tahmini yapmak için en uygun özellik olarak RAM  belirlenmiştir.Isı haritası bunu doğrular.
+
+Regresyon modelleri uygulanmıştır ve en uygun olarak linear regresyon seçilmiştir.
+
+Uygulanan regresyon modellerindeki ortalama hata ve açıklayıcılık oranları genel olarak birbirine yakındır.Bu durumdan dolayı basit ve anlaşılır olması için linear regresyonun seçilmesi en uygunudur.
+
+
+
+
 
