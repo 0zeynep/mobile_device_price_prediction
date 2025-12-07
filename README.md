@@ -33,6 +33,13 @@ Projenin adımları şu şekildedir:
 
 ### 1)Veri setinin yüklenmesi:
 
+        import pandas as pd
+        import matplotlib.pyplot as plt
+        import numpy as np
+
+        mobiles=pd.read_csv("mobiles_dataset.csv",encoding='latin-1')
+        mobiles.head()
+
 Veri temizliği için pandas,regresyon sonuçlarını ve korelasyon matrisini gösterebilmek için  matplotlib,gerekli hesaplamalar için numpy kütüphanesi kullanılmıştır.
 
 
