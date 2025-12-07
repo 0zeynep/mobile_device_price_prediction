@@ -83,6 +83,8 @@ Korelasyon matrisi,iki veya daha fazla değişkenin ne kadar güçlü ve ne yön
 
 Isı haritasında da görüldüğü gibi en uygun ilişki Launched Price(USA) ile  RAM dir.
 
+![heatmap](images/heatmap.png)
+
 ### 6)RAM miktarı ile telefonların ortalama lansman fiyatı arasındaki ilişkiyi gösteren bar grafiği
 
 Aşağıdaki bar grafiğinde de görüldüğü gibi RAM miktarı arttıkça Launched Price(USA) de artmaktadır.
@@ -147,12 +149,14 @@ Grafik boyutu,gerçek veri noktaları ve regresyon doğrusu oluşturulur.
 ![Linear Regresyon](images/linear_regression.png)
 ### Polinomal Regresyon
 
-RAM özelliğini alır ve degree=2 (ikinci derece/karesel) kullanarak onu yeni bir özellik setine dönüştürür. Basitçe, orijinal $x$ (RAM) değerini x^2 formunda genişletir.
+RAM özelliğini alır ve degree=2 (ikinci derece/karesel) kullanarak onu yeni bir özellik setine dönüştürür. Basitçe, orijinal  (RAM) değerini x^2 formunda genişletir.
 
 Bu yeni, genişletilmiş özellikler seti üzerine klasik bir Doğrusal Regresyon (LinearRegression) modeli eğitilir. Bu, modelin aslında bir eğri öğrenmesini sağlar.
 
 Grafikte de görüldüğü gibi polinomal regresyon doğru bir yaklaşım değildir.Basitlik ve yorumlanabilirlik için fazla karmaşıktır.
+
 ![Polinomal Regresyon](images/polinomial_regression.png)
+
 ### Random Forest
 
 Karar ağaçlarından oluşur.Ağaçların ortalamasını alır.
@@ -166,25 +170,35 @@ Grafikte görüldüğü gibi linear regresyonla arasında çokn büyük bir fark
 
 ### Lojistik Regresyon 
 
-Lojistik regresyon uygulamak için kategorik ifadeler olması gerekir.Lojistik regresyonun çıktısı 0-1 arasındadır.Fiyat tahmini için uygun değildir.
+Lojistik regresyon uygulamak için kategorik ifadeler olması gerekir.
+
+Lojistik regresyonun çıktısı 0-1 arasındadır.
+
+Fiyat tahmini için uygun değildir.
 
 ### SVR
 
-Amacı, veri noktalarının çoğunu epsilon adı verilen belirli bir hata marjı içinde tutan en iyi sınırı bulmaktır . Hata marjı içindeki noktalar umursanmaz, sadece bu marjın dışındaki noktalar (Destek Vektörleri) hataya neden olur.
+Amacı, veri noktalarının çoğunu epsilon adı verilen belirli bir hata marjı içinde tutan en iyi sınırı bulmaktır . 
+
+Hata marjı içindeki noktalar umursanmaz, sadece bu marjın dışındaki noktalar (Destek Vektörleri) hataya neden olur.
 
 Grafikte görüldüğü gibi düşük açıklama gücü ve yüksek hata payından dolayı uygun değildir.
 
 ![SVR](images/SVR.png)
 
 ### Çoklu Linear Regresyon 
+Çoklu regresyon birden fazla özelliğin bağımlı değişkeni  nasıl etkilediğini bulmayı sağlar.
 
-RAM ve Launched Year’ın birlikte kullanılması da basit regresyondan farklı bir sonuca ulaşmamıştır.
+Korelasyon matrisine baktığımızda RAM den sonra en  güçlü ilişki Mobile Weight ile kurulmuştur.
+
+RAM ve Mobile Weight’ın birlikte kullanılması da basit regresyondan farklı bir sonuca ulaşmamıştır.
+
 
 ![Çoklu Linear](images/multiple_linear.png)
 
 ## Sonuç
 
-Veri setindeki özellikler içinn gerekli temizlik yapılarak  sayısal değerler dışındaki ifadeler çıkarılmıştır.
+Veri setindeki özellikler için gerekli temizlik yapılarak  sayısal değerler dışındaki ifadeler çıkarılmıştır.
 
 Fiyat tahmini yapmak için en uygun özellik olarak RAM  belirlenmiştir.Isı haritası bunu doğrular.
 
